@@ -1,66 +1,124 @@
-# Epitope Prediction: Training Set Optimization for Linear B-Cell Epitopes
+# Training Set Optimization for Linear B-Cell Epitope Prediction
 
-## Project Overview
-This repository contains the implementation of my MSc in Computer Science thesis project at Aston University, focused on optimizing training data for linear B-cell epitope (LBCE) prediction using advanced machine learning techniques.
+[![Python](https://img.shields.io/badge/Python-3.8%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Azure ML](https://img.shields.io/badge/Azure%20ML-Cloud%20Computing-0078D4?style=for-the-badge&logo=microsoft-azure&logoColor=white)](https://azure.microsoft.com/en-us/services/machine-learning/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-Deep%20Learning-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![XGBoost](https://img.shields.io/badge/XGBoost-Gradient%20Boosting-EB4034?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
+[![Status](https://img.shields.io/badge/Status-Completed-success?style=for-the-badge)]()
 
-The project investigates the benefits of organism-specific training for predicting LBCEs, with a specific focus on Coronavirus, and evaluates how well these models generalize to heterogeneous datasets containing multiple pathogens.
+## 📌 Project Overview
 
-## Repository Structure
-This repository contains three main implementation files:
+This repository hosts the source code and technical implementation for my MSc Computer Science thesis at Aston University. The project focuses on **optimizing training datasets** to enhance the prediction accuracy of **Linear B-Cell Epitopes (LBCEs)**, which are critical for vaccine design and immunodiagnostics.
 
-1. **FNN_Corona_Subset.ipynb**: Implementation of a Feedforward Neural Network model on the Coronavirus-specific subset dataset.
+The core investigation evaluates the impact of **organism-specific training** (specifically for **Coronavirus**) versus heterogeneous training, using advanced machine learning and feature optimization techniques.
 
-2. **XGBoost_Corona_Subset.ipynb**: Implementation of an XGBoost model on the same Coronavirus-specific subset, which outperformed the FNN approach.
+### Key Objectives
+- **Feature Selection:** Reduce dimensionality of physicochemical feature sets (~400 features) to identifying the most predictive attributes.
+- **Model Comparison:** Benchmark Feedforward Neural Networks (FNN) against Gradient Boosting (XGBoost).
+- **Generalization:** Assess how well organism-specific models perform on diverse, multi-pathogen datasets.
 
-3. **XGBoost_Heterogeneous_Dataset.ipynb**: Having established XGBoost's superior performance on the Corona subset, this notebook applies XGBoost to the main heterogeneous dataset to assess generalizability across multiple pathogens.
+---
 
-## Key Features
-- Implementation of feature selection techniques:
-  - Boruta algorithm for initial feature filtering
-  - Genetic Algorithm (GA) for feature subset optimization
-- Machine learning models comparison:
-  - Feedforward Neural Network (FNN)
-  - XGBoost
-- Class imbalance handling:
-  - SMOTE (Synthetic Minority Over-sampling Technique)
-  - Focal Loss
-  - Class weights
-- Hyperparameter tuning using Bayesian Optimization
-- Model evaluation metrics:
-  - Matthews Correlation Coefficient (MCC)
-  - Precision, Recall, F1 Score
-  - Area Under ROC Curve (AUC-ROC)
+## 🏗️ System Architecture
 
-## Results
-- Achieved 77.32% reduction in feature dimensionality (from 393 to 88 features)
-- XGBoost performance on Coronavirus subset:
-  - AUC: 0.994
-  - F1 Score: 0.88
-  - MCC: 0.789
-- FNN performance on Coronavirus subset:
-  - AUC: 0.975
-  - F1 Score: 0.71
-  - MCC: 0.579
-- XGBoost generalization to heterogeneous dataset:
-  - AUC: 0.981
-  - F1 Score: 0.87
-  - MCC: 0.829
+The pipeline integrates advanced feature selection with robust classification models.
 
-## Technologies Used
-- Python (NumPy, Pandas, Scikit-learn, TensorFlow, SciPy)
-- Azure Machine Learning for cloud computing resources
-- Statistical analysis libraries for model evaluation
+```mermaid
+graph TD
+    subgraph Data Processing
+        A[Raw Epitope Data] --> B[Preprocessing]
+        B --> |SMOTE/Undersampling| C[Balanced Dataset]
+        B --> |MinMax Scaler| D[Normalized Features]
+    end
 
-## Installation and Usage
-```bash
-# Clone the repository
-git clone https://github.com/Muh76/Epitope-Prediction.git
+    subgraph Feature Optimization
+        D --> E[Boruta Algorithm]
+        E --> |Confirmed Features| F[Genetic Algorithm (GA)]
+        F --> |Optimal Subset| G[Final Feature Set]
+    end
 
-# Navigate to project directory
-cd Epitope-Prediction
+    subgraph Modeling
+        G --> H{Model Selection}
+        H --> I[XGBoost Classifier]
+        H --> J[FNN (TensorFlow)]
+        I --> |Bayesian Opt| K[Tuned Model]
+        J --> |Focal Loss| L[Tuned Model]
+    end
 
-# Install required packages
-pip install -r requirements.txt
+    K --> M[Evaluation Metrics]
+    L --> M
+```
 
-# Run Jupyter notebooks
-jupyter notebook
+---
+
+## 📊 Performance & Results
+
+The study demonstrated that **XGBoost** trained on the Coronavirus-specific subset significantly outperformed the Neural Network approach and achieved varying degrees of generalization on heterogeneous data.
+
+### Key Metrics
+| Metric | XGBoost (Corona) | FNN (Corona) | XGBoost (Generalization) |
+| :--- | :---: | :---: | :---: |
+| **AUC-ROC** | **0.994** | 0.975 | 0.981 |
+| **F1 Score** | **0.880** | 0.710 | 0.870 |
+| **MCC** | **0.789** | 0.579 | 0.829 |
+
+### Visual Comparison
+![Model Performance Comparison](assets/results_comparison.png)
+
+> **Insight:** Feature selection reduced the feature space by **77.32%** (from 393 to 88 features) while maintaining or improving predictive accuracy.
+
+---
+
+## 🛠️ Technologies & Methodology
+
+### Machine Learning
+- **XGBoost:** Exploited for its efficiency in handling tabular data and feature importance capabilities.
+- **Deep Learning (FNN):** Implemented with **TensorFlow/Keras**, utilizing **Focal Loss** to address extreme class imbalance.
+- **Feature Selection:**
+    - **Boruta:** Used as a wrapper method to find all relevant features.
+    - **Genetic Algorithms (DEAP):** Evolutionary strategy to fine-tune the feature subset.
+
+### Cloud & DevOps
+- **Azure Machine Learning:** utilized for scalable compute resources and experiment tracking.
+
+### Data Handling
+- **SMOTE:** Synthetic Minority Over-sampling Technique to handle dataset imbalance.
+- **Bayesian Optimization:** Employed via `scikit-optimize` for efficient hyperparameter tuning.
+
+---
+
+## 🚀 Installation & Usage
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Muh76/Epitope-Prediction.git
+   cd Epitope-Prediction
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run the Analysis:**
+   - **XGBoost on Corona Subset:**
+     ```bash
+     python XGBoost-Corona.py
+     ```
+   - **FNN on Corona Subset:**
+     ```bash
+     python FNN-Corona.py
+     ```
+
+---
+
+## 🎓 Citation
+
+If you use this code or findings in your research, please cite:
+
+> **Comparison of Machine Learning Approaches for Linear B-Cell Epitope Prediction**
+> *MSc Thesis, Aston University*
+
+---
+
+*Developed by [Your Name](https://github.com/Muh76)*
