@@ -32,15 +32,15 @@ graph TD
     end
 
     subgraph Feature Optimization
-        D --> E[Boruta Algorithm]
-        E --> |Confirmed Features| F[Genetic Algorithm (GA)]
-        F --> |Optimal Subset| G[Final Feature Set]
+        D --> E["Boruta Algorithm"]
+        E --> |Confirmed Features| F["Genetic Algorithm (GA)"]
+        F --> |Optimal Subset| G["Final Feature Set"]
     end
 
     subgraph Modeling
         G --> H{Model Selection}
-        H --> I[XGBoost Classifier]
-        H --> J[FNN (TensorFlow)]
+        H --> I["XGBoost Classifier"]
+        H --> J["FNN (TensorFlow)"]
         I --> |Bayesian Opt| K[Tuned Model]
         J --> |Focal Loss| L[Tuned Model]
     end
@@ -121,4 +121,11 @@ If you use this code or findings in your research, please cite:
 
 ---
 
-*Developed by [Your Name](https://github.com/Muh76)*
+## 📬 Contact
+
+**Mohammad Babaie**
+
+- 📧 **Email:** [mj.babaie@gmail.com](mailto:mj.babaie@gmail.com)
+- 💼 **LinkedIn:** [linkedin.com/in/mohammadbabaie](https://www.linkedin.com/in/mohammadbabaie/)
+- 🐙 **GitHub:** [github.com/Muh76](https://github.com/Muh76)
+
